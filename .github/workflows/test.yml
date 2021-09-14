@@ -30,7 +30,9 @@ jobs:
 
     - run: |
         cacheDir=$(pip cache dir)
+        echo "cacheDir is $cacheDir"
         ls $cacheDir
+        ls /home/runner/.cache/pip
     - name: Black fmt
       run: |
         black . --check
