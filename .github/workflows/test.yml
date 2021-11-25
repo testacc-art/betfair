@@ -4,68 +4,72 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  setup-node-files-input:
+    name: Setup Node for ${{ matrix.node-version-file }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.7, 3.9]
-
+        os: [windows-latest, ubuntu-18.04]
+        node-version-file: ['.npmrc', '.node-version', 'none']
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: setup-node ${{ matrix.node-version-file }}
+        uses: hkaur008/setup-node@pull209
+        with:
+          node-version-file: ${{ matrix.node-version-file }}
+      - name: Node version
+        run: node --version
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: dmitry-shibanov/setup-python@v-dmshib/add-cache-support
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
+  setup-node-files-input-and-node-version:
+    name: Setup Node for ${{ matrix.node-version-file }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-18.04]
+        node-version-file: ['.npmrc', '.node-version', 'none']
+        node-version: [12, 14, 17]
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: setup-node ${{ matrix.node-version-file }}
+        uses: hkaur008/setup-node@pull209
+        with:
+          node-version-file: ${{ matrix.node-version-file }}
+          node-version: ${{ matrix.node-version }}
+      - name: Node version
+        run: node --version
 
-    - name: Check setup.py
-      run: |
-        python setup.py check
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install -r requirements-test.txt
-
-    - run: |
-        cacheDir=$(pip cache dir)
-        echo "cacheDir is $cacheDir"
-        ls $cacheDir
-        ls /home/runner/.cache/pip
-    - name: Black fmt
-      run: |
-        black . --check
-
-    - name: Unittest
-      run: |
-        python -m unittest discover -s tests
-        
-    - name: Coverage
-      run: |
-        coverage run -m unittest discover
-        coverage report
-
-#   test-speed:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         python-version: [3.8]
-
-#     steps:
-#       - uses: actions/checkout@v2
-
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: dmitry-shibanov/setup-python@v-dmshib/add-cache-support
-#         with:
-#           python-version: ${{ matrix.python-version }}
-
-#       - name: Install dependencies
-#         run: |
-#           pip install -r requirements.txt
-#           pip install -r requirements-speed.txt
-#           pip install -r requirements-test.txt
-
-#       - name: Unittest
-#         run: |
-#           python -m unittest discover -s tests
+  setup-node-node-version-input:
+    name: Setup Node for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-18.04]
+        node-version: [12, 14, 17]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-node ${{ matrix.node-version }}
+        uses: hkaur008/setup-node@pull209
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Node version
+        run: node --version
+  setup-node-default:
+    name: Setup Node for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-18.04]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-node
+        uses: hkaur008/setup-node@pull209
+      - name: Node version
+        run: node --version
