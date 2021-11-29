@@ -4,68 +4,78 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  setup-java-major-versions:
+    name: Setup Java for major versions ${{ matrix.java }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.7, 3.9]
-
+        os: [macos-latest, windows-latest, ubuntu-18.04]
+        distribution: ['liberica']
+        java-package: ['jdk', 'jre']
+        java:
+        - '11.x'
+        - '16.x'
+        - '17.x'
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-java ${{ matrix.java }}
+        uses: RazorNd/setup-java@liberica
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: ${{ matrix.java-package }}
+          distribution: ${{ matrix.distribution }}
+      - name: Java version
+        run: java -version
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: dmitry-shibanov/setup-python@v-dmshib/add-cache-support
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
+  setup-java-major-minor-versions:
+    name: Setup Java for major minor versions ${{ matrix.java }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-18.04]
+        distribution: ['liberica']
+        java-package: ['jdk', 'jre']
+        java:
+        - '8.0.x'
+        - '11.0.x'
+        - '16.0.x'
+        - '17.0.x'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-java ${{ matrix.java }}
+        uses: RazorNd/setup-java@liberica
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: ${{ matrix.java-package }}
+          distribution: ${{ matrix.distribution }}
+      - name: Java version
+        run: java -version
 
-    - name: Check setup.py
-      run: |
-        python setup.py check
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install -r requirements-test.txt
-
-    - run: |
-        cacheDir=$(pip cache dir)
-        echo "cacheDir is $cacheDir"
-        ls $cacheDir
-        ls /home/runner/.cache/pip
-    - name: Black fmt
-      run: |
-        black . --check
-
-    - name: Unittest
-      run: |
-        python -m unittest discover -s tests
-        
-    - name: Coverage
-      run: |
-        coverage run -m unittest discover
-        coverage report
-
-#   test-speed:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         python-version: [3.8]
-
-#     steps:
-#       - uses: actions/checkout@v2
-
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: dmitry-shibanov/setup-python@v-dmshib/add-cache-support
-#         with:
-#           python-version: ${{ matrix.python-version }}
-
-#       - name: Install dependencies
-#         run: |
-#           pip install -r requirements.txt
-#           pip install -r requirements-speed.txt
-#           pip install -r requirements-test.txt
-
-#       - name: Unittest
-#         run: |
-#           python -m unittest discover -s tests
+  setup-java-ea-versions:
+    name: Setup Java for ea versions ${{ matrix.java }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-18.04]
+        distribution: ['liberica']
+        java-package: ['jdk', 'jre']
+        java:
+        - '11-ea'
+        - '16-ea'
+        - '17-ea'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-java ${{ matrix.java }}
+        uses: RazorNd/setup-java@liberica
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: ${{ matrix.java-package }}
+          distribution: ${{ matrix.distribution }}
+      - name: Java version
+        run: java -version
