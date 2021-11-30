@@ -39,6 +39,7 @@ jobs:
 
       - name: After installing apt dependencies
         run: |
+          sudo env "PATH=$PATH" python -V
           python -V
           python -c "import os; print(os.environ['PATH'])"
           sudo python -V
