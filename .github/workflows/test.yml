@@ -16,7 +16,7 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
       - name: setup-node ${{ matrix.node-version-file }}
-        uses: hkaur008/setup-node@pull209
+        uses: actions/setup-node@v2.5.0
         with:
           node-version-file: ${{ matrix.node-version-file }}
       - name: Node version
