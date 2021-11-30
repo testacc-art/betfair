@@ -16,7 +16,7 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
       - name: setup-node ${{ matrix.node-version-file }}
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2
         with:
           node-version-file: ${{ matrix.node-version-file }}
       - name: Node version
