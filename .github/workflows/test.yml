@@ -40,6 +40,10 @@ jobs:
       - name: After installing apt dependencies
         run: |
           python -V
+          python -c "import os; print(os.environ['PATH'])"
+          sudo python -V
+          echo "with sudo"
+          sudo python -c "import os; print(os.environ['PATH'])"
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           python -V
           sudo python -V
