@@ -43,5 +43,5 @@ jobs:
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           python -V
           sudo python -V
-          sudo python get-pip.py pip==21.0.1
+          sudo python3 get-pip.py pip==21.0.1
           sudo pip freeze
