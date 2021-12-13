@@ -11,17 +11,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
-        distribution: ['liberica']
+        distribution: ['adopt', 'microsoft']
         java-package: ['jdk', 'jre']
         java:
         - '11.x'
-        - '16.x'
+        - '8.x'
         - '17.x'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: RazorNd/setup-java@liberica
+        uses: actions/setup-java@main
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
@@ -36,18 +36,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
-        distribution: ['liberica']
+        distribution: ['adopt', 'microsoft']
         java-package: ['jdk', 'jre']
         java:
         - '8.0.x'
         - '11.0.x'
-        - '16.0.x'
         - '17.0.x'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: RazorNd/setup-java@liberica
+        uses: actions/setup-java@main
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
@@ -62,7 +61,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
-        distribution: ['liberica']
+        distribution: ['adopt', 'microsoft']
         java-package: ['jdk', 'jre']
         java:
         - '11-ea'
@@ -72,7 +71,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: RazorNd/setup-java@liberica
+        uses: actions/setup-java@main
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
