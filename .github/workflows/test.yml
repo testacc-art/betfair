@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
-        distribution: ['adopt', 'microsoft']
+        distribution: ['microsoft']
         java-package: ['jdk', 'jre']
         java:
         - '11.x'
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: dmitry-shibanov/setup-java@v-dmshib/fix-ea-versions-microsoft
+        uses: dmitry-shibanov/setup-java@v-dmshib/add-docs-microsoft
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
-        distribution: ['adopt', 'microsoft']
+        distribution: ['microsoft']
         java-package: ['jdk', 'jre']
         java:
         - '8.0.x'
@@ -46,7 +46,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: dmitry-shibanov/setup-java@v-dmshib/fix-ea-versions-microsoft
+        uses: dmitry-shibanov/setup-java@v-dmshib/add-docs-microsoft
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
@@ -71,10 +71,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: setup-java ${{ matrix.java }}
-        uses: dmitry-shibanov/setup-java@v-dmshib/fix-ea-versions-microsoft
+        uses: dmitry-shibanov/setup-java@v-dmshib/add-docs-microsoft
         with:
           java-version: ${{ matrix.java }}
           java-package: ${{ matrix.java-package }}
           distribution: ${{ matrix.distribution }}
       - name: Java version
         run: java -version
+
+  setup-java-toolcache-versions:
+    name: Setup Java for ea versions ${{ matrix.java }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-18.04]
+        distribution: ['microsoft']
+        java-package: ['jdk', 'jre']
+        java:
+        - '11'
+        - '17'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-java ${{ matrix.java }}
+        uses: dmitry-shibanov/setup-java@v-dmshib/add-docs-microsoft
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: ${{ matrix.java-package }}
+          distribution: ${{ matrix.distribution }}
+      - name: Java version
+        run: java -version
+      - name: setup-java ${{ matrix.java }}
+        uses: dmitry-shibanov/setup-java@v-dmshib/add-docs-microsoft
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: ${{ matrix.java-package }}
+          distribution: ${{ matrix.distribution }}
